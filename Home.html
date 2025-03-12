@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="content">
+        <div class="container bg-black p-5 rounded shadow" style="max-width: 900px; border: 2px solid gold;">
+            <div class="text-center mb-4">
+                <img src="Helldivers-2-Logo-PNG.png" alt="Helldivers" class="img-fluid mb-4">
+                <h1 class="display-4" style="background-color: yellow; color: black; font-family: Arial, sans-serif;">Student List</h1>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <input type="text" class="form-control form-control-lg" id="search" placeholder="Search" style="background-color: black; color: gold; border: 1px solid gold;">
+                </div>
+                <div class="col-md-4 text-right">
+                    <button class="btn btn-lg" style="background-color: gold; color: black;" onclick="addStudent()">Add Student</button>
+                </div>
+            </div>
+            <table class="table table-hover" id="studentTable" style="color: gold;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Course</th>
+                        <th>Year</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example row -->
+                    <tr>
+                        <td>1</td>
+                        <td>Doe</td>
+                        <td>Julian</td>
+                        <td>A.</td>
+                        <td>BSIT-2A</td>
+                        <td>3</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" onclick="editStudent(this)">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteStudent(this)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="statistics mt-4 text-center" style="color: gold;">
+                <h3 style="background-color: yellow; color: black;">Helldivers Fallen: <span id="helldiversFallen"></span></h3>
+                <h3 style="background-color: orange; color: black;">Bullets Fired: <span id="bulletsFired"></span></h3>
+                <h3 style="background-color: red; color: black;">Enemies Taken Down: <span id="enemiesTakenDown"></span></h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addStudent() {
+            const table = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>New ID</td>
+                <td>New Last Name</td>
+                <td>New First Name</td>
+                <td>New Middle Name</td>
+                <td>New Course</td>
+                <td>New Year</td>
+                <td>
+                    <button class="btn btn-info btn-sm" onclick="editStudent(this)">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteStudent(this)">Delete</button>
+                </td>
+            `;
+        }
+
+        function editStudent(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.getElementsByTagName('td');
+            for (let i = 0; i < cells.length - 1; i++) {
+                const cell = cells[i];
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = cell.innerText;
+                cell.innerText = '';
+                cell.appendChild(input);
+            }
+            button.innerText = 'Save';
+            button.onclick = function() { saveStudent(this); };
+        }
+
+        function saveStudent(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.getElementsByTagName('td');
+            for (let i = 0; i < cells.length - 1; i++) {
+                const cell = cells[i];
+                const input = cell.getElementsByTagName('input')[0];
+                cell.innerText = input.value;
+            }
+            button.innerText = 'Edit';
+            button.onclick = function() { editStudent(this); };
+        }
+
+        function deleteStudent(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        document.getElementById('helldiversFallen').innerText = getRandomNumber(100000, 999999);
+        document.getElementById('bulletsFired').innerText = getRandomNumber(1000000, 9999999);
+        document.getElementById('enemiesTakenDown').innerText = getRandomNumber(100000, 999999);
+    </script>
+</body>
+</html>
